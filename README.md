@@ -1,0 +1,1 @@
+# svelte-writable-array-store
