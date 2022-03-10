@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export default function writableArray<T extends Array<T>>(
+export function writableArray<T>(
   value: T[],
   start?: (set: (value: T[]) => void) => () => void
 ) {
@@ -10,44 +10,43 @@ export default function writableArray<T extends Array<T>>(
    * adds one or more elements to the end of an array
    */
   function push(...items: T[]) {
-    return update(($array) => [...$array, ...items]);
+    update(($array) => [...$array, ...items]);
   }
 
   /**
    * removes the last element from an array
    */
   function pop() {
-    return update(($array) => $array.slice(0, $array.length - 1));
+    update(($array) => $array.slice(0, $array.length - 1));
   }
 
   /**
    * removes the first element from an array
    */
   function shift() {
-    return update(($array) => $array.slice(1));
+    update(($array) => $array.slice(1));
   }
 
   /**
    * adds one or more elements to the beginning of an array
    */
   function unshift(...items: T[]) {
-    return update(($array) => [...items, ...$array]);
+    update(($array) => [...items, ...$array]);
   }
 
   /**
    * changes the contents of an array by removing or
    * replacing existing elements and/or adding new elements
    */
-  function splice(start: number): void;
-  function splice(start: number, deleteCount: number): void;
+  function splice(start: number, deleteCount?: number): void;
   function splice(start: number, deleteCount: number, ...items: T[]): void;
   function splice(start: number, deleteCount?: number, ...items: T[]) {
-    return update(($array) => {
+    update(($array) => {
       const copy = [...$array];
-      if (deleteCount !== undefined) {
-        copy.splice(start, deleteCount, ...items);
-      } else {
+      if (deleteCount === undefined) {
         copy.splice(start);
+      } else {
+        copy.splice(start, deleteCount, ...items);
       }
       return copy;
     });
@@ -56,8 +55,8 @@ export default function writableArray<T extends Array<T>>(
   /**
    * sorts the elements of an array
    */
-  function sort(compareFn: (firstEl: T, secondEl: T) => number) {
-    return update(($array) => {
+  function sort(compareFn?: (firstEl: T, secondEl: T) => number) {
+    update(($array) => {
       const copy = [...$array];
       copy.sort(compareFn);
       return copy;
@@ -68,14 +67,23 @@ export default function writableArray<T extends Array<T>>(
    * reverses an array
    */
   function reverse() {
-    return update(($array) => {
+    update(($array) => {
       const copy = [...$array];
       copy.reverse();
       return copy;
     });
   }
 
-  function copyWithin() {}
+  /**
+   * shallow copies part of an array to another location in the same array
+   */
+  function copyWithin(target: number, start: number, end?: number) {
+    update(($array) => {
+      const copy = [...$array];
+      copy.copyWithin(target, start, end);
+      return copy;
+    });
+  }
 
   return {
     subscribe,
@@ -88,5 +96,6 @@ export default function writableArray<T extends Array<T>>(
     splice,
     sort,
     reverse,
+    copyWithin,
   };
 }
