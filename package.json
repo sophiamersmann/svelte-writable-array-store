@@ -2,7 +2,12 @@
   "name": "svelte-writable-array-store",
   "version": "0.1.0",
   "description": "Writable array store",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup index.ts --format esm,cjs --sourcemap --dts",
     "test": "jest --coverage",
