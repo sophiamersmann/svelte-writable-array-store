@@ -1,7 +1,7 @@
 {
   "name": "svelte-writable-array-store",
   "version": "0.1.0",
-  "description": "Writable array store",
+  "description": "Writable array store in Svelte",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
