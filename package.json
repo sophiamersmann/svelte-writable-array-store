@@ -9,6 +9,7 @@
     "dist"
   ],
   "scripts": {
+    "prepare": "npm run build",
     "build": "tsup index.ts --format esm,cjs --sourcemap --dts",
     "test": "jest --coverage",
     "test:watch": "npm run test -- --watch",
